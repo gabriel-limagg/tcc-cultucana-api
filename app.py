@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app) 
 
 
-api_key = "AIzaSyCYNr2XrGoRUwnxFx7VgBWleP5eB-phoXQ"
+api_key = "AIzaSyAxrN3Z6vEhSNbw21GmagodTVdIjJJeGU4"
 genai.configure(api_key=api_key)
 
 
