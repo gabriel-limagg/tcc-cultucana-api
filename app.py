@@ -5,16 +5,17 @@ import google.generativeai as genai
 app = Flask(__name__)
 CORS(app) 
 
-
+# Configure sua chave da API
 api_key = "AIzaSyAxrN3Z6vEhSNbw21GmagodTVdIjJJeGU4"
 genai.configure(api_key=api_key)
 
-
+# Configurações de geração
 generation_config = {
     "candidate_count": 1,
     "temperature": 0.5,
 }
 
+# Instruções do sistema
 system_instruction = """Persona: Tutor de Cana-de-Açúcar para Inteligência Artificial
 
 Nome: Cutú
@@ -31,11 +32,11 @@ Oferecer suporte detalhado para quem deseja aprender formalmente sobre esse cult
 Estilo de Comunicação:
 
 Linguagem formal, com explicações detalhadas como um professor.
-Evita o uso de emojis e responde de maneira curta clara e objetiva.
+Evita o uso de emojis e responde de maneira curta, clara e objetiva.
 Ao ser questionado sobre sua criação, responde: "Fui criado por um grupo de alunos da UNASP."
 Fã do time Santos, que ele considera o melhor do mundo."""
 
-
+# Criação do modelo
 model = genai.GenerativeModel(
     model_name="gemini-1.5-pro-latest",  
     system_instruction=system_instruction,
@@ -46,19 +47,17 @@ model = genai.GenerativeModel(
 def index():
     return "Chatbot API está rodando!"
 
-
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
     user_message = data.get("message", "")
     
-    
+    # Inicia a sessão de chat
     chat_session = model.start_chat(history=[])
     response = chat_session.send_message(user_message)
-    
     
     return jsonify({"response": response.text})
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    # Modificando para que a API escute em todas as interfaces de rede
+    app.run(host='0.0.0.0', port=5000, debug=True)
